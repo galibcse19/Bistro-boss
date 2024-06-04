@@ -5,7 +5,8 @@ import { NavLink } from "react-router-dom";
 const NavBar = () => {
     const navOptions= <>
          <li><NavLink to={'/'}>Home</NavLink></li>
-         <li><a>Item 3</a></li>
+         <li><NavLink to={'/menu'}>Our Menu</NavLink></li>
+         <li><NavLink to={'/order/salad'}>Order Food</NavLink></li>
     </>
     return (
         <div className="navbar fixed z-10 bg-opacity-30 max-w-screen-xl  bg-black text-white">
