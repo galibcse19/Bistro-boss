@@ -1,12 +1,39 @@
-import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { authContext } from "../../../../../providers/AuthProvider";
 
  
 
 const NavBar = () => {
+    const {user,logOut}= useContext(authContext);
+
+    const handleLogOut=()=>{
+        logOut()
+        .then(()=>{})
+        .catch(error => console.log(error));
+    }
     const navOptions= <>
          <li><NavLink to={'/'}>Home</NavLink></li>
          <li><NavLink to={'/menu'}>Our Menu</NavLink></li>
          <li><NavLink to={'/order/salad'}>Order Food</NavLink></li>
+         {
+            user && <><li><NavLink to={'/secret'}>Secret</NavLink></li></>
+         }
+         {
+            !user && <>
+            <li><NavLink to={'/login'}>Login</NavLink></li>
+           <li><NavLink to={'/signup'}>SignUp</NavLink></li>
+            </>
+         }
+         {
+            user ? <>
+                 <span>{user?.displayName}</span>
+                <button onClick={handleLogOut} className="btn btn-ghost">LOGOUT</button>
+                </> : <>
+                 <li><Link to={'/login'}></Link></li>
+                 </>
+
+         }
     </>
     return (
         <div className="navbar fixed z-10 bg-opacity-30 max-w-screen-xl  bg-black text-white">
@@ -19,7 +46,7 @@ const NavBar = () => {
                 {navOptions}
                 </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">Bisteo Boss</a>
+                <a className="btn btn-ghost text-xl">Bistro Boss</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
