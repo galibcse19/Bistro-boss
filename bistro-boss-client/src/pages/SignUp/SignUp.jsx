@@ -4,10 +4,12 @@ import { authContext } from "../../providers/AuthProvider";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 
 const SignUp = () => {
 
+    const axiosPublic= useAxiosPublic();
     const naviagate= useNavigate();
     const {creatUser,updateUserProfile,logOut}= useContext(authContext);
     const { register,reset, handleSubmit, formState: { errors },} = useForm()
@@ -19,8 +21,15 @@ const SignUp = () => {
             console.log(loggedUser);
             updateUserProfile(data.name,data.photoURL)
             .then(()=>{
-                console.log('user profile updated');
-                reset();
+                // console.log('user profile updated');
+                const userInfo={
+                    name: data.name,
+                    email:data.email
+                }
+                axiosPublic.post('/users',userInfo)
+                .then(res =>{
+                    if(res.data.insertedId){
+                        reset();
                 Swal.fire({
                     title: "Good job!",
                     text: "User Created Successfully",
@@ -30,6 +39,9 @@ const SignUp = () => {
                   logOut()
                  .then(()=>{})
                  .catch(error => console.log(error));
+                    }
+                })
+                
             })
             .catch(error =>console.log(error))
             naviagate('/login');

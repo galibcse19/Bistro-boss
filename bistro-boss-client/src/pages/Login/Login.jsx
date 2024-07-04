@@ -7,9 +7,11 @@ import Swal from 'sweetalert2';
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 
 const Login = () => {
+    const axiosPublic = useAxiosPublic();
     const [disable, setDisable]=useState(true);
     const navigate = useNavigate();
     const location =useLocation();
@@ -36,6 +38,14 @@ const Login = () => {
         .then((result) => {
             const user = result.user;
             console.log(user);
+            const userInfo ={
+                email:result.user?.email,
+                name: result.user?.displayName
+            }
+            axiosPublic.post('/users',userInfo)
+            .then(res =>{
+                console.log(res.data);
+            })
             Swal.fire({
                 title: "Good job!",
                 text: "LogIn Successfully",
