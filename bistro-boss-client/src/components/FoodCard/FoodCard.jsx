@@ -8,7 +8,7 @@ import useCart from "../../hooks/useCart";
  
 
 const FoodCard = ({item}) => {
-    const {image,price,recipe,name,__id} = item;
+    const {image,price,recipe,name,_id} = item;
     const {user}= useAuth();
     const navigate= useNavigate();
     const location= useLocation();
@@ -21,7 +21,7 @@ const FoodCard = ({item}) => {
         if(user && user.email){
             // console.log(user.email,food);
             const cartItem= {
-                menuId: __id,
+                menuId: _id,
                 email:user.email,
                 name,
                 image,
